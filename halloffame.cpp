@@ -523,30 +523,26 @@ private:
 				}
 			}
 
-			if(g.m_name != "pellsson"
-			&& g.m_name != "breggan")
+			bool hs = false;
+			if(m_high_points.value < g.m_points)
 			{
-				bool hs = false;
-				if(m_high_points.value < g.m_points)
-				{
-					m_high_points.set(m_games.size() - 1, g.m_points);
-					hs = true;
-				}
-				if(m_high_turns.value < g.m_turns)
-				{
-					m_high_turns.set(m_games.size() - 1, g.m_turns);
-					hs = true;
-				}
-				if(m_high_level.value < g.m_maxlvl)
-				{
-					m_high_level.set(m_games.size() - 1, g.m_maxlvl);
-					hs = true;
-				}
+				m_high_points.set(m_games.size() - 1, g.m_points);
+				hs = true;
+			}
+			if(m_high_turns.value < g.m_turns)
+			{
+				m_high_turns.set(m_games.size() - 1, g.m_turns);
+				hs = true;
+			}
+			if(m_high_level.value < g.m_maxlvl)
+			{
+				m_high_level.set(m_games.size() - 1, g.m_maxlvl);
+				hs = true;
+			}
 
-				if(play && hs)
-				{
-					show_new_highscore(g.m_name);
-				}
+			if(play && hs)
+			{
+				show_new_highscore(g.m_name);
 			}
 		}
 		m_in.clear();
