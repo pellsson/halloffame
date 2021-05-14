@@ -124,6 +124,9 @@ private:
 
 			static const char *deaths[] =
 			{
+				"\x1b[KYou die...",
+				"\x1b[KYou drown.",
+				"\x1b[KDo you want your possessions identified?",
 				"\x1b[HYou die...",
 				"\x1b[HYou drown.",
 				"\x1b[HDo you want your possessions identified?",
@@ -344,7 +347,7 @@ private:
 public:
 	hall_of_fame(const fs::path &root)
 		: m_root{std::move(root)}
-		, m_in{root / "nh361/var/xlogfile"}
+		, m_in{root / "xlogfile"}
 		, m_first_time{true}
 	{
 		update_dead(false);
@@ -368,7 +371,7 @@ public:
 		m_first_time = false;
 
 		m_console.clear();
-		m_console.print_big(28,	2, VT_WHITE, "NH2018");
+		m_console.print_big(28,	2, VT_WHITE, "NH2021");
 		m_console.print_big(3, 10, VT_YELLOW, "HALL OF FAME");
 
 		print_highscore("MOST TURNS SURVIVED", hs_y + 0, m_high_turns);
@@ -398,7 +401,9 @@ private:
 	void play_death(std::string name)
 	{
 		fs::path most_recent;
-		fs::path user_dir(m_root / "dgldir/userdata" / name / "ttyrec");
+		fs::path user_dir(m_root / "ttyrec" / name);
+
+		std::ofstream log("/tmp/find_kek.txt");
 
 		for(auto &p : fs::directory_iterator(user_dir))
 		{
@@ -410,11 +415,13 @@ private:
 			{
 				most_recent = p;
 			}
+			log << most_recent.u8string() << std::endl;
 		}
 
 		if(!most_recent.empty())
 		{
 			show_player_dead(name);
+			log << "Playing: " << most_recent.u8string() << std::endl;
 			death_replay dr{most_recent};
 
 			m_console.set_color(VT_WHITE);
@@ -517,7 +524,7 @@ private:
 
 			if(play)
 			{
-				if(g.m_death != "quit")
+				// if(g.m_death != "quit")
 				{
 					play_death(g.m_name);
 				}
