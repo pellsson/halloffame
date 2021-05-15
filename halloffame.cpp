@@ -641,10 +641,11 @@ int main(int argc, const char *argv[])
 	for(;;)
 	{
 		hof.run();
-		if(wait_key(1))
-		{
-			break;
-		}
+		sleep(1);
+		// if(wait_key(1))
+		// {
+		// 	break;
+		// }
 	}
 }
 
